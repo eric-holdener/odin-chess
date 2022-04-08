@@ -6,19 +6,19 @@ describe Game do
   describe '#initialize' do
     context 'when game is initialized' do
       it 'creates a chess game board' do
-        # test code
+        expect(game.game_board.length).not_to be nil
       end
 
       it 'creates player 1 as player_1' do
-        # test code
+        expect(game.player_1).to be_kind_of(Player)
       end
 
       it 'creates player 2 as player_2' do
-        # test code
+        expect(game.player_2).to be_kind_of(Player)
       end
 
       it 'sets player_1 (white) to current player' do
-        # test code
+        expect(game.current_player).to eq(game.player_1)
       end
     end
   end

@@ -1,7 +1,15 @@
 class Pieces
+  attr_accessor :alive, :valid_moves
+  def initialize
+    @alive = true
+    @valid_moves = []
+  end
 end
 
 class King < Pieces
+  def initialize
+    @valid_moves = []
+  end
 end
 
 class Queen < Pieces
