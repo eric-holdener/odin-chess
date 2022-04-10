@@ -26,7 +26,7 @@ class Knight < Pieces
   attr_accessor :symbol
   def initialize
     super
-    @symbol = 'Kn'
+    @symbol = 'H'
   end
 end
 
