@@ -94,5 +94,36 @@ class Pawn < Pieces
   def initialize(parent)
     super(parent)
     @symbol = 'P'
+    @start_row = get_start_row
+  end
+
+  def get_valid_moves(node)
+    children = []
+    if @start_row == 1
+      children.push(node[0] + 1, node[1] + 0)
+      children.push(node[0] + 1, node[1] + 1)
+      children.push(node[0] + 1, node[1] - 1)
+    else
+      children.push(node[0] - 1, node[1] + 0)
+      children.push(node[0] - 1, node[1] + 1)
+      children.push(node[0] - 1, node[1] - 1)
+    end
+    
+    i = 0
+    while i < children.length
+      if children[i][0] > 7 || children[i][0].negative? || children[i][1] > 7 || children[i][1].negative?
+        children.delete_at(i)
+      else
+        i += 1
+      end
+    end
+    self.valid_moves = children
+  end
+
+  def get_start_row
+    if @parent = 'W'
+      return 6
+    else
+      return 1
   end
 end
