@@ -7,9 +7,6 @@ class Pieces
 end
 
 class King < Pieces
-  def initialize
-    @valid_moves = []
-  end
 end
 
 class Queen < Pieces
