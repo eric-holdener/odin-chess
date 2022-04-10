@@ -32,7 +32,7 @@ class King < Pieces
         i += 1
       end
     end
-    self.valid_moves = children
+    children
   end
 end
 
@@ -52,8 +52,9 @@ class Queen < Pieces
         if i == 0 || j == 0
           if i == 0 && j = 0
             next
+          else
+            children.push(node[0] + i, node[1] + j)
           end
-          children.push(node[0] + i, node[1] + j)
         elsif i == j
           children.push(node[0] + i, node[1] + j)
           children.push(node[0] - i, node[1] + j)
@@ -72,7 +73,7 @@ class Queen < Pieces
         i += 1
       end
     end
-    self.valid_moves = children
+    children
   end
 end
 
@@ -101,7 +102,7 @@ class Knight < Pieces
         i += 1
       end
     end
-    self.valid_moves = children
+    children
   end
 end
 
@@ -111,6 +112,37 @@ class Rook < Pieces
     super(parent)
     @symbol = 'R'
   end
+
+  def get_valid_moves(node)
+    children = 0
+    i = 0
+    while i < 7
+      j = 0
+      while j < 7
+        if i == 0 || j == 0
+          if i == j
+            next
+          else
+            children.push([node[0] + i, node[1] + j])
+            children.push([node[0] + i, node[1] - j])
+            children.push([node[0] - i, node[1] + j])
+            children.push([node[0] - i, node[1] - j])
+          end
+        end
+        j += 1
+      end
+      i += 1
+    end
+    i = 0
+    while i < children.length
+      if children[i][0] > 7 || children[i][0].negative? || children[i][1] > 7 || children[i][1].negative?
+        children.delete_at(i)
+      else
+        i += 1
+      end
+    end
+    children
+  end
 end
 
 class Bishop < Pieces
@@ -119,6 +151,26 @@ class Bishop < Pieces
     super(parent)
     @symbol = 'B'
   end
+
+  def get_valid_moves(node)
+    children = []
+    i = 0
+    while i < 7
+      children.push(node[0] + i, node[1] + i)
+      children.push(node[0] + i, node[1] - i)
+      children.push(node[0] - i, node[1] + i)
+      children.push(node[0] - i, node[1] - i)
+      i += 1
+    end
+    i = 0
+    while i < children.length
+      if children[i][0] > 7 || children[i][0].negative? || children[i][1] > 7 || children[i][1].negative?
+        children.delete_at(i)
+      else
+        i += 1
+      end
+    end
+    children
 end
 
 class Pawn < Pieces
@@ -149,7 +201,7 @@ class Pawn < Pieces
         i += 1
       end
     end
-    self.valid_moves = children
+    children
   end
 
   def get_start_row
