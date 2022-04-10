@@ -39,8 +39,8 @@ describe Game do
 
   describe '#populate_board' do
     context 'fills the empty game board with pieces' do
-      it 'populates the chess board with pieces in default positions' do
-        # test code
+      it 'populates the chess board with pieces in default positions - rook' do
+        expect(game.game_board[0][0]).to be_kind_of(Rook)
       end
     end
   end

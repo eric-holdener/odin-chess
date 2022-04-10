@@ -13,8 +13,8 @@ describe Player do
         expect(player.player_color).to eq('white')
       end
 
-      it 'creates alive game pieces - king example' do
-        expect(player.king.alive).to be true
+      it 'creates a hash with all pieces in it' do
+        expect(player.pieces['king']).to be_kind_of(King)
       end
     end
   end

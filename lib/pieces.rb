@@ -7,19 +7,49 @@ class Pieces
 end
 
 class King < Pieces
+  attr_accessor :symbol
+  def initialize
+    super
+    @symbol = 'K'
+  end
 end
 
 class Queen < Pieces
+  attr_accessor :symbol
+  def initialize
+    super
+    @symbol = 'Q'
+  end
 end
 
 class Knight < Pieces
+  attr_accessor :symbol
+  def initialize
+    super
+    @symbol = 'Kn'
+  end
 end
 
 class Rook < Pieces
+  attr_accessor :symbol
+  def initialize
+    super
+    @symbol = 'R'
+  end
 end
 
 class Bishop < Pieces
+  attr_accessor :symbol
+  def initialize
+    super
+    @symbol = 'B'
+  end
 end
 
 class Pawn < Pieces
+  attr_accessor :symbol
+  def initialize
+    super
+    @symbol = 'P'
+  end
 end

@@ -29,5 +29,11 @@ describe King do
         expect(king.valid_moves).to eq([])
       end
     end
+    
+    context 'the subclass has its symbol set' do
+      it 'the king has symbol k' do
+        expect(king.symbol).to eq('K')
+      end
+    end
   end
 end
