@@ -54,7 +54,9 @@ describe Queen do
   describe '#get_valid_moves' do
     context 'returns valid moves' do
       it 'returns an array of all valid moves for queen' do
-        # expected = []
+        expected = [[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],
+                  [1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],
+                  [1,0],[2,0],[3,0],[4,0],[5,0],[6,0],[7,0]]
         node = [0,0]
         valid = queen.get_valid_moves(node)
         expect(valid).to eq(expected)
