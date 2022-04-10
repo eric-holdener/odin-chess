@@ -4,8 +4,8 @@ require_relative 'player'
 class Game
   attr_accessor :game_board, :player_1, :player_2, :current_player
   def initialize(player_1, player_2)
-    @player_1 = Player.new(player_1, 'white')
-    @player_2 = Player.new(player_2, 'black')
+    @player_1 = Player.new(player_1, 'W')
+    @player_2 = Player.new(player_2, 'B')
     @game_board = populate_board(create_board)
     @current_player = @player_1
   end
@@ -71,11 +71,11 @@ class Game
         if board[index][idx2].nil?
           values.push(nil)
         else
-          values.push(column.symbol)
+          values.push(column.parent + column.symbol)
         end
       end
       puts "#{index} #{values.join(' ')}"
     end
-    puts "  #{(0..7).to_a.join(' ')}"
+    puts "  #{(0..7).to_a.join('  ')}"
   end
 end
