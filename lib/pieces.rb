@@ -47,10 +47,13 @@ class Queen < Pieces
     children = []
     i = 0
     while i < 7
+      puts "i = #{i}"
       j = 0
       while j < 7
+        puts "j = #{j}"
         if i == 0 || j == 0
           if i == 0 && j = 0
+            j += 1
             next
           else
             children.push(node[0] + i, node[1] + j)
@@ -171,6 +174,7 @@ class Bishop < Pieces
       end
     end
     children
+  end
 end
 
 class Pawn < Pieces
@@ -209,5 +213,6 @@ class Pawn < Pieces
       return 6
     else
       return 1
+    end
   end
 end
