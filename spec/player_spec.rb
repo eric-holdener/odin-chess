@@ -92,9 +92,21 @@ describe Player do
   describe '#check_for_valid_piece' do
     context 'checks to make sure the board location selected' do
       it 'is the same color as player' do
+        input = [7, 7]
+        board = game.game_board
+        expect(player.check_for_valid_piece(input, board)).to be true
       end
 
-      it 'is not nil' do
+      it 'returns false if it is nil' do
+        input = [5, 5]
+        board = game.game_board
+        expect(player.check_for_valid_piece(input, board)).to be false
+      end
+
+      it 'returns false if piece is the opposite color' do
+        input = [0, 0]
+        board = game.game_board
+        expect(player.check_for_valid_piece(input, board)).to be false
       end
     end
   end
@@ -103,7 +115,7 @@ describe Player do
     context 'takes an already verified input and converts it to computer usable' do
       it 'converts [A, 7] to [0, 7]' do
         input = ['A', '7']
-        expect(convert_input(input)).to eq([0, 7])
+        expect(player.convert_input(input)).to eq([0, 7])
       end
     end
   end

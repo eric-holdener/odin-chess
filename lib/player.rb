@@ -20,7 +20,7 @@ class Player
       verified_input = verify_input(user_input.split('')) if user_input.match?(/^\w\d+$/)
       converted_input = convert_input(input) if verified_input
       tf = check_for_valid_piece(converted_input, board) if verified_input
-    
+      return converted_input if tf
 
       puts "Input error! Please enter a proper location (Letter - Number)."
     end
@@ -50,7 +50,7 @@ class Player
   end
 
   def convert_input(input)
-    letter_input = input[0].lower
+    letter_input = input[0].downcase
     number_input = input[1].to_i
     case letter_input
     when 'a'
