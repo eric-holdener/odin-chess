@@ -74,7 +74,24 @@ class Game
           values.push(column.parent + column.symbol)
         end
       end
-      puts "#{index} #{values.join(' ')}"
+      case index
+      when 0
+        puts "A #{values.join(' ')}"
+      when 1
+        puts "B #{values.join(' ')}"
+      when 2
+        puts "C #{values.join(' ')}"
+      when 3
+        puts "D #{values.join(' ')}"
+      when 4
+        puts "E #{values.join(' ')}"
+      when 5
+        puts "F #{values.join(' ')}"
+      when 6
+        puts "G #{values.join(' ')}"
+      when 7
+        puts "H #{values.join(' ')}"
+      end
     end
     puts "  #{(0..7).to_a.join('  ')}"
   end

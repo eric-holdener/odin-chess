@@ -26,7 +26,7 @@ describe Player do
 
       it 'returns an error if selection is not a piece that belongs to the player' do
       end
-      
+
       it 'returns an error if selection is outside scope of the board' do
       end
 
