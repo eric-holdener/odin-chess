@@ -117,25 +117,29 @@ class Rook < Pieces
   end
 
   def get_valid_moves(node)
-    children = 0
+    children = []
     i = 0
-    while i < 7
+    while i < 8
       j = 0
-      while j < 7
+      while j < 8
         if i == 0 || j == 0
           if i == j
+            j += 1
             next
           else
             children.push([node[0] + i, node[1] + j])
             children.push([node[0] + i, node[1] - j])
             children.push([node[0] - i, node[1] + j])
             children.push([node[0] - i, node[1] - j])
+            j += 1
           end
+        else
+          j += 1
         end
-        j += 1
       end
       i += 1
     end
+    children = children.uniq
     i = 0
     while i < children.length
       if children[i][0] > 7 || children[i][0].negative? || children[i][1] > 7 || children[i][1].negative?
@@ -158,12 +162,17 @@ class Bishop < Pieces
   def get_valid_moves(node)
     children = []
     i = 0
-    while i < 7
-      children.push(node[0] + i, node[1] + i)
-      children.push(node[0] + i, node[1] - i)
-      children.push(node[0] - i, node[1] + i)
-      children.push(node[0] - i, node[1] - i)
-      i += 1
+    while i < 8
+      check = [node[0] + i, node[1] + i]
+      if check == node
+        i += 1
+      else
+        children.push([node[0] + i, node[1] + i])
+        children.push([node[0] + i, node[1] - i])
+        children.push([node[0] - i, node[1] + i])
+        children.push([node[0] - i, node[1] - i])
+        i += 1
+      end
     end
     i = 0
     while i < children.length
@@ -188,13 +197,13 @@ class Pawn < Pieces
   def get_valid_moves(node)
     children = []
     if @start_row == 1
-      children.push(node[0] + 1, node[1] + 0)
-      children.push(node[0] + 1, node[1] + 1)
-      children.push(node[0] + 1, node[1] - 1)
+      children.push([node[0] + 1, node[1] + 0])
+      children.push([node[0] + 1, node[1] + 1])
+      children.push([node[0] + 1, node[1] - 1])
     else
-      children.push(node[0] - 1, node[1] + 0)
-      children.push(node[0] - 1, node[1] + 1)
-      children.push(node[0] - 1, node[1] - 1)
+      children.push([node[0] - 1, node[1] + 0])
+      children.push([node[0] - 1, node[1] + 1])
+      children.push([node[0] - 1, node[1] - 1])
     end
     
     i = 0
@@ -210,9 +219,9 @@ class Pawn < Pieces
 
   def get_start_row
     if @parent = 'W'
-      return 6
+      6
     else
-      return 1
+      1
     end
   end
 end
