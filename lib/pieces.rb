@@ -46,28 +46,28 @@ class Queen < Pieces
   def get_valid_moves(node)
     children = []
     i = 0
-    while i < 7
-      puts "i = #{i}"
+    while i < 8
       j = 0
-      while j < 7
-        puts "j = #{j}"
-        if i == 0 || j == 0
-          if i == 0 && j = 0
-            j += 1
-            next
-          else
-            children.push(node[0] + i, node[1] + j)
+      while j < 8
+        test_val = [node[0] + i, node[1] + j]
+        if test_val != node
+          if i == j
+            children.push([node[0] + i, node[1] + j])
+            children.push([node[0] + i, node[1] - j])
+            children.push([node[0] - i, node[1] + j])
+            children.push([node[0] - i, node[1] - j])
+          elsif i == 0 || j == 0
+            children.push([node[0] + i, node[1] + j])
+            children.push([node[0] + i, node[1] - j])
+            children.push([node[0] - i, node[1] + j])
+            children.push([node[0] - i, node[1] - j])
           end
-        elsif i == j
-          children.push(node[0] + i, node[1] + j)
-          children.push(node[0] - i, node[1] + j)
-          children.push(node[0] + i, node[1] - j)
-          children.push(node[0] - i, node[1] + j)
         end
         j += 1
       end
       i += 1
     end
+    children = children.uniq
     i = 0
     while i < children.length
       if children[i][0] > 7 || children[i][0].negative? || children[i][1] > 7 || children[i][1].negative?
