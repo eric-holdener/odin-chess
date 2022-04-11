@@ -14,8 +14,16 @@ class Player
               'pawn_8' => Pawn.new(color)}
   end
 
-  def select_piece
-    # gets user input to select a chess piece
+  def select_piece(board)
+    loop do
+      user_input = gets.chomp
+      verified_input = verify_input(user_input.split('')) if user_input.match?(/^\w\d+$/)
+      converted_input = convert_input(input) if verified_input
+      tf = check_for_valid_piece(converted_input, board) if verified_input
+    
+
+      puts "Input error! Please enter a proper location (Letter - Number)."
+    end
   end
 
   def get_move
@@ -24,5 +32,45 @@ class Player
 
   def unselect_piece
     # prompts user to if they want to unselect the piece they selected
+  end
+
+  def verify_input(input)
+    valid_letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+    return input if valid_letters.include?(input[0].lower) && input[1].to_i.between?(0, 7)
+  end
+
+  def check_for_valid_piece(input, board)
+    if board[input[0]][input[1]].nil?
+      false
+    elsif board[input[0]][input[1]].parent != @player_color
+      false
+    else
+      true
+    end
+  end
+
+  def convert_input(input)
+    letter_input = input[0].lower
+    number_input = input[1].to_i
+    case letter_input
+    when 'a'
+      input = [0, number_input]
+    when 'b'
+      input = [1, number_input]
+    when 'c'
+      input = [2, number_input]
+    when 'd'
+      input = [3, number_input]
+    when 'e'
+      input = [4, number_input]
+    when 'f'
+      input = [5, number_input]
+    when 'g'
+      input = [6, number_input]
+    when 'h'
+      input = [7, number_input]
+    end
+
+    input
   end
 end

@@ -1,7 +1,9 @@
 require './lib/player.rb'
+require './lib/game.rb'
 
 describe Player do
-  subject(:player) { described_class.new('human', 'white') }
+  subject(:player) { described_class.new('human', 'W') }
+  subject(:game) { Game.new('human', 'human') }
 
   describe '#initialize' do
     context 'when game is initialized' do
@@ -10,7 +12,7 @@ describe Player do
       end
 
       it 'assigns player a color - white in this example' do
-        expect(player.player_color).to eq('white')
+        expect(player.player_color).to eq('W')
       end
 
       it 'creates a hash with all pieces in it' do
@@ -21,16 +23,39 @@ describe Player do
 
   describe '#select_piece' do
     context 'player should be prompted to select a piece to make a move with' do
+      before do
+        user_input = 'H0'
+        allow(player).to receive(:gets).and_return(user_input)
+      end
+
       it 'returns an array selection of [x][y] for selecting piece on board' do
+        expect(player.select_piece(game.game_board)).to eq('H0')
+      end
+    end
+
+    context 'when a player enters a value outside the scope of the board' do
+      before do
+        invalid_input = 'J8'
+        user_input = 'H0'
+        allow(player).to receive(:gets).and_return(invalid_input, user_input)
       end
 
-      it 'returns an error if selection is not a piece that belongs to the player' do
+      it 'returns an error and prompts the user again' do
+        error_message = 'Input error! Please enter a proper location (Letter - Number).'
+        expect(player).to receive(:puts).with(error_message)
+        player.select_piece(game.game_board)
+      end
+    end
+
+    context 'when a player enters a value on the board that is not their piece' do
+      before do
+        invalid_input = 'A0'
+        valid_input = 'H0'
+        allow(player).to receive(:gets).and_return(invalid_input, user_input)
       end
 
-      it 'returns an error if selection is outside scope of the board' do
-      end
+      it 'returns an error on the invalid piece and prompts the user again' do
 
-      it 'returns an error if blank board square is selected' do
       end
     end
   end
@@ -60,6 +85,25 @@ describe Player do
       end
 
       it 'reprompts user to give proper input if improper input is given' do
+      end
+    end
+  end
+
+  describe '#check_for_valid_piece' do
+    context 'checks to make sure the board location selected' do
+      it 'is the same color as player' do
+      end
+
+      it 'is not nil' do
+      end
+    end
+  end
+
+  describe '#convert_input' do
+    context 'takes an already verified input and converts it to computer usable' do
+      it 'converts [A, 7] to [0, 7]' do
+        input = ['A', '7']
+        expect(convert_input(input)).to eq([0, 7])
       end
     end
   end
