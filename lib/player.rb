@@ -13,4 +13,16 @@ class Player
               'pawn_5' => Pawn.new(color), 'pawn_6' => Pawn.new(color), 'pawn_7' => Pawn.new(color),
               'pawn_8' => Pawn.new(color)}
   end
+
+  def select_piece
+    # gets user input to select a chess piece
+  end
+
+  def get_move
+    # gets user input to move a piece to a valid location
+  end
+
+  def unselect_piece
+    # prompts user to if they want to unselect the piece they selected
+  end
 end

@@ -78,4 +78,8 @@ class Game
     end
     puts "  #{(0..7).to_a.join('  ')}"
   end
+
+  def print_board_with_moves(board = @game_board, valid_moves)
+    # reprints board with piece highlighted and valid moves highlighted
+  end
 end
