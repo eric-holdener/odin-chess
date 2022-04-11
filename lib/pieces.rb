@@ -195,7 +195,6 @@ class Pawn < Pieces
   end
 
   def get_valid_moves(node)
-    p "start row = #{@start_row}"
     children = []
     if @start_row == 1
       children.push([node[0] + 1, node[1] + 0])
@@ -219,7 +218,7 @@ class Pawn < Pieces
   end
 
   def get_start_row
-    if @parent = 'W'
+    if @parent == 'W'
       6
     else
       1
