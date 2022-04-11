@@ -36,7 +36,7 @@ class Player
 
   def verify_input(input)
     valid_letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-    return input if valid_letters.include?(input[0].lower) && input[1].to_i.between?(0, 7)
+    return input if valid_letters.include?(input[0].downcase) && input[1].to_i.between?(0, 7)
   end
 
   def check_for_valid_piece(input, board)
