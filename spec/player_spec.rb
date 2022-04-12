@@ -29,7 +29,7 @@ describe Player do
       end
 
       it 'returns an array selection of [x][y] for selecting piece on board' do
-        expect(player.select_piece(game.game_board)).to eq('H0')
+        expect(player.select_piece(game.game_board)).to eq([7, 0])
       end
     end
 
@@ -50,12 +50,28 @@ describe Player do
     context 'when a player enters a value on the board that is not their piece' do
       before do
         invalid_input = 'A0'
-        valid_input = 'H0'
+        user_input = 'H0'
         allow(player).to receive(:gets).and_return(invalid_input, user_input)
       end
 
       it 'returns an error on the invalid piece and prompts the user again' do
+        error_message = 'Input error! Please enter a proper location (Letter - Number).'
+        expect(player).to receive(:puts).with(error_message)
+        player.select_piece(game.game_board)
+      end
+    end
 
+    context 'when a player enters a value longer than two digits' do
+      before do
+        invalid_input = 'J88'
+        user_input = 'H0'
+        allow(player).to receive(:gets).and_return(invalid_input, user_input)
+      end
+
+      it 'returns an error and prompts the user again' do
+        error_message = 'Input error! Please enter a proper location (Letter - Number).'
+        expect(player).to receive(:puts).with(error_message)
+        player.select_piece(game.game_board)
       end
     end
   end

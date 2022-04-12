@@ -18,7 +18,7 @@ class Player
     loop do
       user_input = gets.chomp
       verified_input = verify_input(user_input.split('')) if user_input.match?(/^\w\d+$/)
-      converted_input = convert_input(input) if verified_input
+      converted_input = convert_input(verified_input) if verified_input
       tf = check_for_valid_piece(converted_input, board) if verified_input
       return converted_input if tf
 
