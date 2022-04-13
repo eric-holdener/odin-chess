@@ -40,22 +40,35 @@ class King < Pieces
 
   def get_valid_moves(node)
     children = []
-    children.push([node[0] + 1, node[1] + 1])
-    children.push([node[0] + 1, node[1] + 0])
-    children.push([node[0] + 1, node[1] - 1])
-    children.push([node[0] + 0, node[1] + 1])
-    children.push([node[0] + 0, node[1] - 1])
-    children.push([node[0] - 1, node[1] + 1])
-    children.push([node[0] - 1, node[1] + 0])
-    children.push([node[0] - 1, node[1] - 1])
-    i = 0
-    while i < children.length
-      if children[i][0] > 7 || children[i][0].negative? || children[i][1] > 7 || children[i][1].negative?
-        children.delete_at(i)
-      else
-        i += 1
-      end
-    end
+    up_left = []
+    up_right = []
+    up = []
+    right = []
+    down_right = []
+    down = []
+    down_left = []
+    left = []
+
+    up_left.push([node[0] - 1, node[1] - 1])
+    up.push([node[0] - 1, node[1]])
+    up_right.push([node[0] - 1, node[1] + 1])
+    right.push([node[0], node[1] + 1])
+    down_right.push([node[0] + 1, node[1] + 1])
+    down.push([node[0] + 1, node[1]])
+    down_left.push([node[0] + 1, node[1] - 1])
+    left.push([node[0], node[1] - 1])
+
+    children.push(up_left)
+    children.push(up)
+    children.push(up_right)
+    children.push(right)
+    children.push(down_right)
+    children.push(down)
+    children.push(down_left)
+    children.push(left)
+
+    children = check_moves(children, node)
+
     children
   end
 end
@@ -224,9 +237,9 @@ class Pawn < Pieces
 
     children.push(normal_move)
     children.push(capture_moves)
-    
+
     children = check_moves(children, node)
-    
+
     children
   end
 

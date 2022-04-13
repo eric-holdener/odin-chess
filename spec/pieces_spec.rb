@@ -40,7 +40,7 @@ describe King do
   describe '#valid_moves(location)' do
     context 'returns a list of all valid moves a king can move from any location' do
       it 'returns valid moves for king from location[0][0[' do
-        expected = [[1,1],[1,0],[0,1]]
+        expected = [[[0, 1]], [[1, 1]], [[1, 0]]]
         node = [0, 0]
         valid = king.get_valid_moves(node)
         expect(valid).to eq(expected)
