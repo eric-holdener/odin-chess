@@ -6,7 +6,7 @@ class Pieces
     @parent = parent
   end
 
-  def check_moves(children)
+  def check_moves(children, node)
     children.each do |direction|
       i = 0
       while i < direction.length
@@ -27,6 +27,7 @@ class Pieces
         i += 1
       end
     end
+    children
   end
 end
 
@@ -97,7 +98,7 @@ class Queen < Pieces
     children.push(down_left)
     children.push(left)
 
-    children = check_moves(children)
+    children = check_moves(children, node)
 
     children
   end
@@ -141,36 +142,26 @@ class Rook < Pieces
 
   def get_valid_moves(node)
     children = []
+    up = []
+    right = []
+    down = []
+    left = []
     i = 0
     while i < 8
-      j = 0
-      while j < 8
-        if i == 0 || j == 0
-          if i == j
-            j += 1
-            next
-          else
-            children.push([node[0] + i, node[1] + j])
-            children.push([node[0] + i, node[1] - j])
-            children.push([node[0] - i, node[1] + j])
-            children.push([node[0] - i, node[1] - j])
-            j += 1
-          end
-        else
-          j += 1
-        end
-      end
+      up.push([node[0] - i, node[1]])
+      right.push([node[0], node[1] + i])
+      down.push([node[0] + i, node[1]])
+      left.push([node[0], node[1] - i])
       i += 1
     end
-    children = children.uniq
-    i = 0
-    while i < children.length
-      if children[i][0] > 7 || children[i][0].negative? || children[i][1] > 7 || children[i][1].negative?
-        children.delete_at(i)
-      else
-        i += 1
-      end
-    end
+
+    children.push(up)
+    children.push(right)
+    children.push(down)
+    children.push(left)
+
+    children = check_moves(children, node)
+
     children
   end
 end
