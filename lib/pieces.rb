@@ -5,6 +5,29 @@ class Pieces
     @valid_moves = []
     @parent = parent
   end
+
+  def check_moves(children)
+    children.each do |direction|
+      i = 0
+      while i < direction.length
+        if direction[i][0] > 7 || direction[i][0].negative? || direction[i][1] > 7 || direction[i][1].negative?
+          direction.delete_at(i)
+        elsif direction[i] == node
+          direction.delete_at(i)
+        else
+          i += 1
+        end
+      end
+    end
+    i = 0
+    while i < children.length
+      if children[i].empty?
+        children.delete_at(i)
+      else
+        i += 1
+      end
+    end
+  end
 end
 
 class King < Pieces
@@ -73,26 +96,9 @@ class Queen < Pieces
     children.push(down)
     children.push(down_left)
     children.push(left)
-    children.each do |direction|
-      i = 0
-      while i < direction.length
-        if direction[i][0] > 7 || direction[i][0].negative? || direction[i][1] > 7 || direction[i][1].negative?
-          direction.delete_at(i)
-        elsif direction[i] == node
-          direction.delete_at(i)
-        else
-          i += 1
-        end
-      end
-    end
-    i = 0
-    while i < children.length
-      if children[i].empty?
-        children.delete_at(i)
-      else
-        i += 1
-      end
-    end
+
+    children = check_moves(children)
+
     children
   end
 end
