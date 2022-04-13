@@ -45,32 +45,49 @@ class Queen < Pieces
 
   def get_valid_moves(node)
     children = []
+    up_left = []
+    up_right = []
+    up = []
+    right = []
+    down_right = []
+    down = []
+    down_left = []
+    left = []
     i = 0
     while i < 8
-      j = 0
-      while j < 8
-        test_val = [node[0] + i, node[1] + j]
-        if test_val != node
-          if i == j
-            children.push([node[0] + i, node[1] + j])
-            children.push([node[0] + i, node[1] - j])
-            children.push([node[0] - i, node[1] + j])
-            children.push([node[0] - i, node[1] - j])
-          elsif i == 0 || j == 0
-            children.push([node[0] + i, node[1] + j])
-            children.push([node[0] + i, node[1] - j])
-            children.push([node[0] - i, node[1] + j])
-            children.push([node[0] - i, node[1] - j])
-          end
-        end
-        j += 1
-      end
+      up_left.push([node[0] - i, node[1] - i])
+      up.push([node[0] - i, node[1]])
+      up_right.push([node[0] - i, node[1] + i])
+      right.push([node[0], node[1] + i])
+      down_right.push([node[0] + i, node[1] + i])
+      down.push([node[0] + i, node[1]])
+      down_left.push([node[0] + i, node[1] - i])
+      left.push([node[0], node[1] - i])
       i += 1
     end
-    children = children.uniq
+    children.push(up_left)
+    children.push(up)
+    children.push(up_right)
+    children.push(right)
+    children.push(down_right)
+    children.push(down)
+    children.push(down_left)
+    children.push(left)
+    children.each do |direction|
+      i = 0
+      while i < direction.length
+        if direction[i][0] > 7 || direction[i][0].negative? || direction[i][1] > 7 || direction[i][1].negative?
+          direction.delete_at(i)
+        elsif direction[i] == node
+          direction.delete_at(i)
+        else
+          i += 1
+        end
+      end
+    end
     i = 0
     while i < children.length
-      if children[i][0] > 7 || children[i][0].negative? || children[i][1] > 7 || children[i][1].negative?
+      if children[i].empty?
         children.delete_at(i)
       else
         i += 1
