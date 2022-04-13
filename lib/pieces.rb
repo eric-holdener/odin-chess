@@ -126,22 +126,35 @@ class Knight < Pieces
 
   def get_valid_moves(node)
     children = []
-    children.push([node[0] + 2, node[1] + 1])
-    children.push([node[0] + 2, node[1] - 1])
-    children.push([node[0] - 2, node[1] + 1])
-    children.push([node[0] - 2, node[1] - 1])
-    children.push([node[0] + 1, node[1] + 2])
-    children.push([node[0] + 1, node[1] - 2])
-    children.push([node[0] - 1, node[1] + 2])
-    children.push([node[0] - 1, node[1] - 2])
-    i = 0
-    while i < children.length
-      if children[i][0] > 7 || children[i][0].negative? || children[i][1] > 7 || children[i][1].negative?
-        children.delete_at(i)
-      else
-        i += 1
-      end
-    end
+    up_left = []
+    up_right = []
+    right_up = []
+    right_down = []
+    down_right = []
+    down_left = []
+    left_down = []
+    left_up = []
+
+    down_right.push([node[0] + 2, node[1] + 1])
+    down_left.push([node[0] + 2, node[1] - 1])
+    up_right.push([node[0] - 2, node[1] + 1])
+    up_left.push([node[0] - 2, node[1] - 1])
+    right_down.push([node[0] + 1, node[1] + 2])
+    left_down.push([node[0] + 1, node[1] - 2])
+    right_up.push([node[0] - 1, node[1] + 2])
+    left_up.push([node[0] - 1, node[1] - 2])
+
+    children.push(up_left)
+    children.push(up_right)
+    children.push(right_up)
+    children.push(right_down)
+    children.push(down_right)
+    children.push(down_left)
+    children.push(left_down)
+    children.push(left_up)
+
+    children = check_moves(children, node)
+
     children
   end
 end

@@ -70,7 +70,7 @@ describe Knight do
   describe '#get_valid_moves' do
     context 'returns valid moves' do
       it 'returns an array of all valid moves for knight' do
-        expected = [[2,1],[1,2]]
+        expected = [[[1, 2]], [[2, 1]]]
         node = [0,0]
         valid = knight.get_valid_moves(node)
         expect(valid).to eq(expected)
