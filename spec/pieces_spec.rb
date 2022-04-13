@@ -99,7 +99,7 @@ describe Bishop do
   describe '#get_valid_moves' do
     context 'returns valid moves' do
       it 'returns an array of all valid moves for bishop' do
-        expected = [[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7]]
+        expected = [[[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7]]]
         node = [0,0]
         valid = bishop.get_valid_moves(node)
         expect(valid).to eq(expected)

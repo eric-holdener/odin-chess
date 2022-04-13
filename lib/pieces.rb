@@ -175,27 +175,26 @@ class Bishop < Pieces
 
   def get_valid_moves(node)
     children = []
+    up_right = []
+    up_left = []
+    down_right = []
+    down_left = []
     i = 0
     while i < 8
-      check = [node[0] + i, node[1] + i]
-      if check == node
-        i += 1
-      else
-        children.push([node[0] + i, node[1] + i])
-        children.push([node[0] + i, node[1] - i])
-        children.push([node[0] - i, node[1] + i])
-        children.push([node[0] - i, node[1] - i])
-        i += 1
-      end
+      up_left.push([node[0] - i, node[1] - i])
+      up_right.push([node[0] - i, node[1] + i])
+      down_right.push([node[0] + i, node[1] + i])
+      down_left.push([node[0] + i, node[1] - i])
+      i += 1
     end
-    i = 0
-    while i < children.length
-      if children[i][0] > 7 || children[i][0].negative? || children[i][1] > 7 || children[i][1].negative?
-        children.delete_at(i)
-      else
-        i += 1
-      end
-    end
+
+    children.push(up_right)
+    children.push(up_left)
+    children.push(down_right)
+    children.push(down_left)
+
+    children = check_moves(children, node)
+
     children
   end
 end
