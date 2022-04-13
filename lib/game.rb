@@ -99,4 +99,34 @@ class Game
   def print_board_with_moves(board = @game_board, valid_moves)
     # reprints board with piece highlighted and valid moves highlighted
   end
+
+  def parse_valid_moves_again(moves, board, player)
+    moves.each do |direction|
+      i = 0
+      while i < direction.length
+        if board[direction[0], direction[1]].nil?
+          i += 1
+        elsif board[direction[0], direction[1]].parent == player.player_color
+          direction = direction.slice(..i - 1)
+          break
+        elsif
+          board[direction[0], direction[1]].parent != player.player_color
+          direction = direction.slice(..i)
+          break
+        end
+      end
+    end
+  end
+
+  def clean_arrays(array)
+    i = 0
+    while i < array.length
+      if array[i].empty?
+        array.delete_at(i)
+      else
+        i += 1
+      end
+    end
+    array
+  end
 end

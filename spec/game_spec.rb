@@ -44,4 +44,23 @@ describe Game do
       end
     end
   end
+
+  describe '#parse_valid_moves_again' do
+    context 'takes all valid moves from a pieces location, gets possible moves that the piece can make given the board' do
+      it 'stops and returns an array of one less when it reaches a piece of the same type' do
+      end
+
+      it 'stops and returns an array including the location when it reaches a piece of the same type' do
+      end
+
+      it 'gives the full arrays when given a piece that can move unobstructed in each way' do
+      end
+
+      it 'returns a subarray for a pawn when it can capture' do
+      end
+
+      it 'returns no subarray for a pawn when it cannot capture' do
+      end
+    end
+  end
 end
