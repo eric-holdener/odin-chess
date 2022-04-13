@@ -113,7 +113,7 @@ describe Pawn do
   describe '#get_valid_moves' do
     context 'returns valid moves' do
       it 'returns an array of all valid moves for pawn' do
-        expected = [[1,0],[1,1]]
+        expected = [[[1,0]],[[1,1]]]
         node = [0,0]
         valid = pawn.get_valid_moves(node)
         expect(valid).to eq(expected)

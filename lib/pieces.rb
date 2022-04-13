@@ -209,24 +209,24 @@ class Pawn < Pieces
 
   def get_valid_moves(node)
     children = []
+    normal_move = []
+    capture_moves = []
+
     if @start_row == 1
-      children.push([node[0] + 1, node[1] + 0])
-      children.push([node[0] + 1, node[1] + 1])
-      children.push([node[0] + 1, node[1] - 1])
+      normal_move.push([node[0] + 1, node[1] + 0])
+      capture_moves.push([node[0] + 1, node[1] + 1])
+      capture_moves.push([node[0] + 1, node[1] - 1])
     else
-      children.push([node[0] - 1, node[1] + 0])
-      children.push([node[0] - 1, node[1] + 1])
-      children.push([node[0] - 1, node[1] - 1])
+      normal_move.push([node[0] - 1, node[1] + 0])
+      capture_moves.push([node[0] - 1, node[1] + 1])
+      capture_moves.push([node[0] - 1, node[1] - 1])
     end
+
+    children.push(normal_move)
+    children.push(capture_moves)
     
-    i = 0
-    while i < children.length
-      if children[i][0] > 7 || children[i][0].negative? || children[i][1] > 7 || children[i][1].negative?
-        children.delete_at(i)
-      else
-        i += 1
-      end
-    end
+    children = check_moves(children, node)
+    
     children
   end
 
