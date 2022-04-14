@@ -101,21 +101,34 @@ class Game
   end
 
   def parse_valid_moves_again(moves, board, player)
-    moves.each do |direction|
+    moves.each_with_index do |direction, idx|
       i = 0
       while i < direction.length
-        if board[direction[0], direction[1]].nil?
+        if board[direction[i][0]][direction[i][1]].nil?
           i += 1
-        elsif board[direction[0], direction[1]].parent == player.player_color
-          direction = direction.slice(..i - 1)
+        elsif board[direction[i][0]][direction[i][1]].parent == player.player_color
+          if i > 0
+            direction = direction.slice(0..i-1)
+          else
+            direction = []
+          end
+          moves[idx] = direction
           break
         elsif
-          board[direction[0], direction[1]].parent != player.player_color
-          direction = direction.slice(..i)
+          board[direction[i][0]][direction[i][1]].parent != player.player_color
+          if i > 0
+            direction = direction.slice(0..i)
+          else
+            direction = [direction[0]]
+          end
+          moves[idx] = direction
           break
         end
       end
     end
+  end
+
+  def parse_valid_moves_pawn(moves, board, player)
   end
 
   def clean_arrays(array)
