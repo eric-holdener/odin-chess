@@ -64,6 +64,46 @@ class Game
     board
   end
 
+  def set_locations
+    player_2.pieces['rook_1'].location = [0, 0]
+    player_2.pieces['knight_1'].location = [0, 1]
+    player_2.pieces['bishop_1'].location = [0, 2]
+    player_2.pieces['king'].location = [0, 3]
+    player_2.pieces['queen'].location = [0, 4]
+    player_2.pieces['bishop_2'].location = [0, 5]
+    player_2.pieces['knight_2'].location = [0, 6]
+    player_2.pieces['rook_2'].location = [0, 7]
+    # pawns for black
+    player_2.pieces['pawn_1'].location = [1, 0]
+    player_2.pieces['pawn_2'].location = [1, 1]
+    player_2.pieces['pawn_3'].location = [1, 2]
+    player_2.pieces['pawn_4'].location = [1, 3]
+    player_2.pieces['pawn_5'].location = [1, 4]
+    player_2.pieces['pawn_6'].location = [1, 5]
+    player_2.pieces['pawn_7'].location = [1, 6]
+    player_2.pieces['pawn_8'].location = [1, 7]
+
+    # pawns for white
+    player_1.pieces['pawn_1'].location = [6, 0]
+    player_1.pieces['pawn_2'].location = [6, 1]
+    player_1.pieces['pawn_3'].location = [6, 2]
+    player_1.pieces['pawn_4'].location = [6, 3]
+    player_1.pieces['pawn_5'].location = [6, 4]
+    player_1.pieces['pawn_6'].location = [6, 5]
+    player_1.pieces['pawn_7'].location = [6, 6]
+    player_1.pieces['pawn_8'].location = [6, 7]
+
+    # populate bottom row with white player pieces
+    player_1.pieces['rook_1'].location = [7, 0]
+    player_1.pieces['knight_1'].location = [7, 1]
+    player_1.pieces['bishop_1'].location = [7, 2]
+    player_1.pieces['king'].location = [7, 3]
+    player_1.pieces['queen'].location = [7, 4]
+    player_1.pieces['bishop_2'].location = [7, 5]
+    player_1.pieces['knight_2'].location = [7, 6]
+    player_1.pieces['rook_2'].location = [7, 7]
+  end
+
   def print_board(board = @game_board)
     board.each_with_index do |row, index|
       values = []
@@ -107,8 +147,8 @@ class Game
         if board[direction[i][0]][direction[i][1]].nil?
           i += 1
         elsif board[direction[i][0]][direction[i][1]].parent == player.player_color
-          if i > 0
-            direction = direction.slice(0..i-1)
+          if i  >  0
+            direction = direction.slice(0..i - 1)
           else
             direction = []
           end
@@ -116,7 +156,7 @@ class Game
           break
         elsif
           board[direction[i][0]][direction[i][1]].parent != player.player_color
-          if i > 0
+          if i  >  0
             direction = direction.slice(0..i)
           else
             direction = [direction[0]]
@@ -129,6 +169,27 @@ class Game
   end
 
   def parse_valid_moves_pawn(moves, board, player)
+    moves.each_with_index do |direction, idx|
+      if idx == 0
+        if board[direction[0][0]][direction[0][1]].nil?
+          next
+        else
+          direction.delete_at(0)
+        end
+      else
+        i = 0
+        while i < direction.length
+          if board[direction[i][0]][direction[i][1]] != nil && 
+          board[direction[i][0]][direction[i][1]].parent != player.player_color
+            i += 1
+            next
+          else
+            direction.delete_at(i)
+          end
+        end
+      end
+    end
+    moves
   end
 
   def clean_arrays(array)
@@ -141,5 +202,20 @@ class Game
       end
     end
     array
+  end
+
+  def move_pieces(board, move, new_piece)
+    if board[move[0]][move[1]] != nil
+      piece = board[move[0]][move[1]]
+      unalive_pieces(piece)
+    end
+    board[new_piece.location[0]][new_piece.location[1]] = nil
+    board[move[0]][move[1]] = new_piece
+    new_piece.location = move
+    board
+  end
+
+  def unalive_pieces(piece)
+    piece.alive = false
   end
 end

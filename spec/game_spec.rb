@@ -109,15 +109,96 @@ describe Game do
   describe "#parse valid moves pawn" do
     context 'takes all valid moves that a pawn can make and figures out if there are captures or not' do
       it 'returns forward one space if space in front is empty' do
+        board = game.create_board
+        pawn = game.player_1.pieces['pawn_1']
+        board[4][4] = pawn
+        valid_moves = pawn.get_valid_moves([4, 4])
+        parse_valid_moves_pawn = game.parse_valid_moves_pawn(valid_moves, board, game.player_1)
+        expected = [[[3, 4]], []]
+        expect(parse_valid_moves_pawn).to eq(expected)
       end
 
       it 'returns nothing if space in front is occupied' do
+        board = game.create_board
+        pawn = game.player_1.pieces['pawn_1']
+        pawn_2 = game.player_1.pieces['pawn_2']
+        board[4][4] = pawn
+        board[3][4] = pawn_2
+        valid_moves = pawn.get_valid_moves([4, 4])
+        parse_valid_moves_pawn = game.parse_valid_moves_pawn(valid_moves, board, game.player_1)
+        expected = [[], []]
+        expect(parse_valid_moves_pawn).to eq(expected)
       end
 
-      it 'returns left or right if spaces diagonal left or right are occupied by an enemy' do
+      it 'returns left if space diagonal left is occupied by an enemy' do
+        board = game.create_board
+        pawn = game.player_1.pieces['pawn_1']
+        pawn_2 = game.player_2.pieces['pawn_1']
+        board[4][4] = pawn
+        board[3][3] = pawn_2
+        valid_moves = pawn.get_valid_moves([4, 4])
+        parse_valid_moves_pawn = game.parse_valid_moves_pawn(valid_moves, board, game.player_1)
+        expected = [[[3,4]], [[3,3]]]
+        expect(parse_valid_moves_pawn).to eq(expected)
       end
 
-      it 'returns nothing diagonal if space diagonal are not occupied by an enemy' do
+      it 'returns right if space diagonal right is occupied by an enemy' do
+        board = game.create_board
+        pawn = game.player_1.pieces['pawn_1']
+        pawn_2 = game.player_2.pieces['pawn_1']
+        board[4][4] = pawn
+        board[3][5] = pawn_2
+        valid_moves = pawn.get_valid_moves([4, 4])
+        parse_valid_moves_pawn = game.parse_valid_moves_pawn(valid_moves, board, game.player_1)
+        expected = [[[3,4]], [[3,5]]]
+        expect(parse_valid_moves_pawn).to eq(expected)
+      end
+    end
+  end
+
+  describe "move_pieces" do
+    context 'after a move is made by a player, moves pieces is called' do
+      it 'sets a nil board location to the new piece, returns the board' do
+        board = game.create_board
+        move = [4, 4]
+        piece = game.player_1.pieces['rook_1']
+        piece.location = [3, 4]
+        board[3][4] = piece
+        board = game.move_pieces(board, move, piece)
+        expect(board[4][4]).to eq(piece)
+      end
+
+      it 'sets a piece already in that location to alive = false, moves the new piece to that location, returns the board' do
+        board = game.create_board
+        move = [4, 4]
+        piece = game.player_1.pieces['rook_1']
+        piece.location = [3, 4]
+        dead_piece = game.player_2.pieces['rook_1']
+        dead_piece.location = [4, 4]
+        board[3][4] = piece
+        board[4][4] = dead_piece
+        board = game.move_pieces(board, move, piece)
+        expect(dead_piece.alive).to be false
+      end
+
+      it 'changes location of piece moved to the new move location' do
+        board = game.create_board
+        move = [4, 4]
+        piece = game.player_1.pieces['rook_1']
+        piece.location = [3, 4]
+        board[3][4] = piece
+        board = game.move_pieces(board, move, piece)
+        expect(piece.location).to eq(move)
+      end
+
+      it 'sets old location of piece on board to nil' do
+        board = game.create_board
+        move = [4, 4]
+        piece = game.player_1.pieces['rook_1']
+        piece.location = [3, 4]
+        board[3][4] = piece
+        board = game.move_pieces(board, move, piece)
+        expect(board[3][4]).to be nil
       end
     end
   end

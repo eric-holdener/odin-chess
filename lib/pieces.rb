@@ -1,9 +1,10 @@
 class Pieces
-  attr_accessor :alive, :valid_moves, :parent
+  attr_accessor :alive, :valid_moves, :parent, :location
   def initialize(parent)
     @alive = true
     @valid_moves = []
     @parent = parent
+    @location = []
   end
 
   def check_moves(children, node)
