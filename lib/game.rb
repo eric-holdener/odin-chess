@@ -11,7 +11,45 @@ class Game
   end
 
   def play_game
-    # plays the chess game
+    if player_1.pieces['king'].alive == false || player_2.pieces['king'].alive
+      # code for end of game
+    elsif check_for_check
+      # code for king in check
+    else
+      board = @game_board
+      print_board(board)
+      loop do
+        piece = @current_player.select_piece
+        all_possible_moves = piece.get_valid_moves
+        if piece.class == Pawn
+          valid_moves = parse_valid_moves_pawn(all_possible_moves, board, @current_player)
+        else
+          valid_moves = parse_valid_moves_again(all_possible_moves, board, @current_player)
+        end
+        return if valid_moves.empty? == false
+
+        puts 'That piece cannot move. Please choose another piece'
+      end
+      print_moves(valid_moves)
+      if @current_player.unselect_piece
+        play_game
+      else
+        loop do
+          move = @current_player.get_move
+          if valid_moves.include? move
+            board = move_pieces(board, move, piece)
+            if @current_player == @player_1
+              @current_player = @player_2
+            else
+              @current_player = @player_1
+            end
+            @game_board = board
+            return
+          end
+          puts 'Please enter a valid move from the list.'
+        end
+      end
+    end
   end
 
   def create_board
@@ -61,6 +99,7 @@ class Game
     board[7][7] = player_1.pieces['rook_2']
 
     # return board
+    set_locations
     board
   end
 
@@ -136,8 +175,29 @@ class Game
     puts "  #{(0..7).to_a.join('  ')}"
   end
 
-  def print_board_with_moves(board = @game_board, valid_moves)
-    # reprints board with piece highlighted and valid moves highlighted
+  def print_moves(moves)
+    moves.each_with_index do |direction, idx|
+      direction.each do |move|
+        case move[0]
+        when 0
+          puts "A#{move[1]}"
+        when 1
+          puts "B#{move[1]}"
+        when 2
+          puts "C#{move[1]}"
+        when 3
+          puts "D#{move[1]}"
+        when 4
+          puts "E#{move[1]}"
+        when 5
+          puts "F#{move[1]}"
+        when 6
+          puts "G#{move[1]}"
+        when 7
+          puts "H#{move[1]}"
+        end
+      end
+    end
   end
 
   def parse_valid_moves_again(moves, board, player)
@@ -166,6 +226,8 @@ class Game
         end
       end
     end
+    moves = clean_arrays(moves)
+    moves
   end
 
   def parse_valid_moves_pawn(moves, board, player)
@@ -189,6 +251,7 @@ class Game
         end
       end
     end
+    moves = clean_arrays(moves)
     moves
   end
 

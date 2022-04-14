@@ -88,7 +88,7 @@ describe Game do
         board[4][6] = rook
         valid_moves = rook.get_valid_moves([4, 6])
         parsed_valid_moves = game.parse_valid_moves_again(valid_moves, board, game.player_1)
-        expected = [[[3, 6], [2, 6], [1, 6], [0, 6]], [[4, 7]], [[5, 6], [6, 6], [7, 6]], []]
+        expected = [[[3, 6], [2, 6], [1, 6], [0, 6]], [[4, 7]], [[5, 6], [6, 6], [7, 6]]]
         expect(parsed_valid_moves).to eq(expected)
       end
 
@@ -114,7 +114,7 @@ describe Game do
         board[4][4] = pawn
         valid_moves = pawn.get_valid_moves([4, 4])
         parse_valid_moves_pawn = game.parse_valid_moves_pawn(valid_moves, board, game.player_1)
-        expected = [[[3, 4]], []]
+        expected = [[[3, 4]]]
         expect(parse_valid_moves_pawn).to eq(expected)
       end
 
@@ -126,7 +126,7 @@ describe Game do
         board[3][4] = pawn_2
         valid_moves = pawn.get_valid_moves([4, 4])
         parse_valid_moves_pawn = game.parse_valid_moves_pawn(valid_moves, board, game.player_1)
-        expected = [[], []]
+        expected = []
         expect(parse_valid_moves_pawn).to eq(expected)
       end
 

@@ -27,11 +27,25 @@ class Player
   end
 
   def get_move
-    # gets user input to move a piece to a valid location
+    user_input = gets.chomp
+    verified_input = verify_input(user_input.split('')) if user_input.match?(/^\w\d+$/)
+    converted_input = convert_input(verified_input) if verified_input
+    converted_input
   end
 
   def unselect_piece
-    # prompts user to if they want to unselect the piece they selected
+    loop do
+      puts "Would you like to select a different piece? (Y/N)"
+      user_input = gets.chomp
+      user_input = user_input.downcase
+      if user_input == 'y'
+        return true
+      elsif user_input == 'n'
+        return false
+      else
+        puts 'That is not a valid option'
+      end
+    end
   end
 
   def verify_input(input)
