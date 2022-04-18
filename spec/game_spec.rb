@@ -202,4 +202,72 @@ describe Game do
       end
     end
   end
+
+  describe "check_for_check" do
+    context 'returns true when king is in check, false when it is not' do
+      it 'returns true when diagonal is in check' do
+        board = game.create_board
+        king = game.player_1.pieces['king']
+        bishop = game.player_2.pieces['bishop_1']
+        board[4][4] = king
+        board[6][6] = bishop
+        game.current_player = game.player_1
+        game.player_1.pieces['king'].location = [4, 4]
+        game.game_board = board
+        expect(game.check_for_check).to be true
+      end
+
+      it 'returns true when up/down/left/right is in check' do
+        board = game.create_board
+        king = game.player_1.pieces['king']
+        rook = game.player_2.pieces['rook_1']
+        board[4][4] = king
+        board[4][6] = rook
+        game.current_player = game.player_1
+        game.player_1.pieces['king'].location = [4, 4]
+        game.game_board = board
+        expect(game.check_for_check).to be true
+      end
+
+      it 'returns true when pawn is checking king' do
+        board = game.create_board
+        king = game.player_1.pieces['king']
+        pawn = game.player_2.pieces['pawn_1']
+        board[4][4] = king
+        board[5][3] = pawn
+        game.current_player = game.player_1
+        game.player_1.pieces['king'].location = [4, 4]
+        game.game_board = board
+        expect(game.check_for_check).to be true
+      end
+
+      it 'returns true when knight is checking king' do
+        board = game.create_board
+        king = game.player_1.pieces['king']
+        knight = game.player_2.pieces['knight_1']
+        board[4][4] = king
+        board[6][5] = knight
+        game.current_player = game.player_1
+        game.player_1.pieces['king'].location = [4, 4]
+        game.game_board = board
+        expect(game.check_for_check).to be true
+      end
+
+      it 'returns false when king is not in check' do
+        board = game.create_board
+        king = game.player_1.pieces['king']
+        pawn = game.player_2.pieces['pawn_1']
+        rook = game.player_2.pieces['rook_1']
+        bishop = game.player_2.pieces['bishop_1']
+        board[4][4] = king
+        board[2][3] = pawn
+        board[5][6] = rook
+        board[6][4] = bishop
+        game.current_player = game.player_1
+        game.player_1.pieces['king'].location = [4, 4]
+        game.game_board = board
+        expect(game.check_for_check).to be false
+      end
+    end
+  end
 end

@@ -281,4 +281,223 @@ class Game
   def unalive_pieces(piece)
     piece.alive = false
   end
+
+  def check_for_check
+    location = @current_player.pieces['king'].location
+    if check_diagonals(location) || check_horizontal_vertical(location) || check_pawn(location) || check_knight(location)
+      true
+    else
+      false
+    end
+  end
+
+  def check_diagonals(node)
+    checks = []
+    up_right = []
+    up_left = []
+    down_right = []
+    down_left = []
+    i = 0
+    while i < 8
+      up_left.push([node[0] - i, node[1] - i])
+      up_right.push([node[0] - i, node[1] + i])
+      down_right.push([node[0] + i, node[1] + i])
+      down_left.push([node[0] + i, node[1] - i])
+      i += 1
+    end
+    checks.push(up_left)
+    checks.push(up_right)
+    checks.push(down_right)
+    checks.push(down_left)
+
+    checks = clean_checks(checks, node)
+
+    tf = contains_piece(checks, 1)
+
+    return tf
+  end
+
+  def check_horizontal_vertical(node)
+    checks = []
+    up = []
+    right = []
+    down = []
+    left = []
+    i = 0
+    while i < 8
+      up.push([node[0] - i, node[1]])
+      right.push([node[0], node[1] + i])
+      down.push([node[0] + i, node[1]])
+      left.push([node[0], node[1] - i])
+      i += 1
+    end
+
+    checks.push(up)
+    checks.push(right)
+    checks.push(down)
+    checks.push(left)
+
+    checks = clean_checks(checks, node)
+
+    tf = contains_piece(checks, 2)
+
+    return tf
+  end
+
+  def check_pawn(node)
+    checks = []
+    check_subarray = []
+    if @current_player.player_color == 'W'
+      check_subarray.push([node[0] + 1, node[1] + 1])
+      check_subarray.push([node[0] + 1, node[1] - 1])
+    else
+      check_subarray.push([node[0] - 1, node[1] + 1])
+      check_subarray.push([node[0] - 1, node[1] + 1])
+    end
+
+    checks.push(check_subarray)
+
+    checks = clean_checks(checks, node)
+
+    tf = contains_piece(checks, 3)
+
+    return tf
+  end
+
+  def check_knight(node)
+    checks = []
+    up_left = []
+    up_right = []
+    right_up = []
+    right_down = []
+    down_right = []
+    down_left = []
+    left_down = []
+    left_up = []
+
+    down_right.push([node[0] + 2, node[1] + 1])
+    down_left.push([node[0] + 2, node[1] - 1])
+    up_right.push([node[0] - 2, node[1] + 1])
+    up_left.push([node[0] - 2, node[1] - 1])
+    right_down.push([node[0] + 1, node[1] + 2])
+    left_down.push([node[0] + 1, node[1] - 2])
+    right_up.push([node[0] - 1, node[1] + 2])
+    left_up.push([node[0] - 1, node[1] - 2])
+
+    checks.push(up_left)
+    checks.push(up_right)
+    checks.push(right_up)
+    checks.push(right_down)
+    checks.push(down_right)
+    checks.push(down_left)
+    checks.push(left_down)
+    checks.push(left_up)
+
+    checks = clean_checks(checks, node)
+
+    tf = contains_piece(checks, 4)
+
+    return tf
+  end
+
+  def clean_checks(children, node)
+    children.each do |direction|
+      i = 0
+      while i < direction.length
+        if direction[i][0] > 7 || direction[i][0].negative? || direction[i][1] > 7 || direction[i][1].negative?
+          direction.delete_at(i)
+        elsif direction[i] == node
+          direction.delete_at(i)
+        else
+          i += 1
+        end
+      end
+    end
+    i = 0
+    while i < children.length
+      if children[i].empty?
+        children.delete_at(i)
+      else
+        i += 1
+      end
+    end
+    children
+  end
+
+  def contains_piece(checks, type)
+    player = @current_player
+    board = @game_board
+    case type
+    when 1
+      checks.each do |direction|
+        i = 0
+        while i < direction.length
+          if board[direction[i][0]][direction[i][1]].nil?
+            i += 1
+          elsif board[direction[i][0]][direction[i][1]].parent != player.player_color
+            if board[direction[i][0]][direction[i][1]].is_a?(Queen) || board[direction[i][0]][direction[i][1]].is_a?(Bishop)
+              return true
+            else
+              break
+            end
+          else
+            i += 1
+          end
+        end
+      end
+      return false
+    when 2
+      checks.each do |direction|
+        i = 0
+        while i < direction.length
+          if board[direction[i][0]][direction[i][1]].nil?
+            i += 1
+          elsif board[direction[i][0]][direction[i][1]].parent != player.player_color
+            if board[direction[i][0]][direction[i][1]].is_a?(Queen) || board[direction[i][0]][direction[i][1]].is_a?(Rook)
+              return true
+            else
+              break
+            end
+          else
+            i += 1
+          end
+        end
+      end
+      return false
+    when 3
+      checks.each do |direction|
+        i = 0
+        while i < direction.length
+          if board[direction[i][0]][direction[i][1]].nil?
+            i += 1
+          elsif board[direction[i][0]][direction[i][1]].parent != player.player_color
+            if board[direction[i][0]][direction[i][1]].is_a?(Pawn)
+              return true
+            else
+              i += 1
+            end
+          end
+        end
+      end
+      return false
+    when 4
+      checks.each do |direction|
+        i = 0
+        while i < direction.length
+          if board[direction[i][0]][direction[i][1]].nil?
+            i += 1
+          elsif board[direction[i][0]][direction[i][1]].parent != player.player_color
+            if board[direction[i][0]][direction[i][1]].is_a?(Knight)
+              return true
+            else
+              i += 1
+            end
+          else
+            i += 1
+          end
+        end
+      end
+      return false
+    end
+  end
 end
