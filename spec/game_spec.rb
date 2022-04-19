@@ -253,6 +253,34 @@ describe Game do
         expect(game.check_for_check).to be true
       end
 
+      it 'returns false when there is a piece blocking a diagonal checker' do
+        board = game.create_board
+        king = game.player_1.pieces['king']
+        pawn = game.player_1.pieces['pawn_1']
+        bishop = game.player_2.pieces['bishop_1']
+        board[4][4] = king
+        board[5][5] = pawn
+        board[6][6] = bishop
+        game.current_player = game.player_1
+        game.player_1.pieces['king'].location = [4, 4]
+        game.game_board = board
+        expect(game.check_for_check).to be false
+      end
+
+      it 'returns false when there is a piece blocking a hor_ver checker' do
+        board = game.create_board
+        king = game.player_1.pieces['king']
+        pawn = game.player_1.pieces['pawn_1']
+        rook = game.player_2.pieces['rook_1']
+        board[4][4] = king
+        board[4][5] = pawn
+        board[4][6] = rook
+        game.current_player = game.player_1
+        game.player_1.pieces['king'].location = [4, 4]
+        game.game_board = board
+        expect(game.check_for_check).to be false
+      end
+
       it 'returns false when king is not in check' do
         board = game.create_board
         king = game.player_1.pieces['king']

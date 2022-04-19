@@ -434,6 +434,8 @@ class Game
         while i < direction.length
           if board[direction[i][0]][direction[i][1]].nil?
             i += 1
+          elsif board[direction[i][0]][direction[i][1]].parent == player.player_color
+            break
           elsif board[direction[i][0]][direction[i][1]].parent != player.player_color
             if board[direction[i][0]][direction[i][1]].is_a?(Queen) || board[direction[i][0]][direction[i][1]].is_a?(Bishop)
               return true
@@ -452,6 +454,8 @@ class Game
         while i < direction.length
           if board[direction[i][0]][direction[i][1]].nil?
             i += 1
+          elsif board[direction[i][0]][direction[i][1]].parent == player.player_color
+            break
           elsif board[direction[i][0]][direction[i][1]].parent != player.player_color
             if board[direction[i][0]][direction[i][1]].is_a?(Queen) || board[direction[i][0]][direction[i][1]].is_a?(Rook)
               return true
@@ -476,6 +480,8 @@ class Game
             else
               i += 1
             end
+          else
+            i += 1
           end
         end
       end
