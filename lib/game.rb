@@ -11,42 +11,46 @@ class Game
   end
 
   def play_game
-    if player_1.pieces['king'].alive == false || player_2.pieces['king'].alive
-      # code for end of game
-    elsif check_for_check
-      # code for king in check
+    check_y_n = check_for_check
+    if @player_1.pieces['king'].alive == false || @player_2.pieces['king'].alive == false
+      game_over
+    elsif check_y_n['tf']
+      @current_player.pieces.each do |piece|
+        moves = piece.get_valid_moves
+        if piece.is_a? Pawn
+          moves = parse_valid_moves_pawn(moves, @game_board, @current_player)
+        else
+          moves = parse_valid_moves_again(moves, @game_board, @current_player)
+        end
+        check_y_n['direction'].each do |location|
+          moves.each do |move|
+            if move == location
+              return
+            else
+              next
+            end
+          end
+        end
+      end
+      game_over
     else
+      puts "It is Player #{@current_player.player_color}'s turn"
       board = @game_board
       print_board(board)
-      loop do
-        piece = @current_player.select_piece
-        all_possible_moves = piece.get_valid_moves
-        if piece.class == Pawn
-          valid_moves = parse_valid_moves_pawn(all_possible_moves, board, @current_player)
-        else
-          valid_moves = parse_valid_moves_again(all_possible_moves, board, @current_player)
-        end
-        return if valid_moves.empty? == false
-
-        puts 'That piece cannot move. Please choose another piece'
-      end
+      valid_moves = move_functionality
       print_moves(valid_moves)
-      if @current_player.unselect_piece
-        play_game
-      else
-        loop do
-          move = @current_player.get_move
-          if valid_moves.include? move
-            board = move_pieces(board, move, piece)
-            if @current_player == @player_1
-              @current_player = @player_2
-            else
-              @current_player = @player_1
-            end
-            @game_board = board
-            return
+      loop do
+        puts 'Please enter a valid move from the list.'
+        move = @current_player.get_move
+        if valid_moves.include? move
+          board = move_pieces(board, move, piece)
+          if @current_player == @player_1
+            @current_player = @player_2
+          else
+            @current_player = @player_1
           end
-          puts 'Please enter a valid move from the list.'
+          @game_board = board
+          return
         end
       end
     end
@@ -176,6 +180,7 @@ class Game
   end
 
   def print_moves(moves)
+    puts "Valid moves are:"
     moves.each_with_index do |direction, idx|
       direction.each do |move|
         case move[0]
@@ -514,6 +519,35 @@ class Game
         end
       end
       return {'tf' => false, 'direction' => nil}
+    end
+  end
+
+  def game_over
+    if @current_player == @player_1
+      winner = @player_2
+    else
+      winner = @player_1
+    end
+    if @current_player.pieces['king'].alive
+      @current_player.pieces['king'].alive == false
+    end
+    puts "Player #{@current_player.player_color} is in checkmate. Player #{winner} wins!"
+  end
+
+  def move_functionality
+    loop do
+      board = @game_board
+      piece = @current_player.select_piece(@game_board)
+      selected_piece = board[piece[0]][piece[1]]
+      all_possible_moves = selected_piece.get_valid_moves(piece)
+      if piece.class == Pawn
+        valid_moves = parse_valid_moves_pawn(all_possible_moves, board, @current_player)
+      else
+        valid_moves = parse_valid_moves_again(all_possible_moves, board, @current_player)
+      end
+      return valid_moves if valid_moves.empty? == false
+
+      puts 'That piece cannot move. Please choose another piece'
     end
   end
 end

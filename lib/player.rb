@@ -33,21 +33,6 @@ class Player
     converted_input
   end
 
-  def unselect_piece
-    loop do
-      puts "Would you like to select a different piece? (Y/N)"
-      user_input = gets.chomp
-      user_input = user_input.downcase
-      if user_input == 'y'
-        return true
-      elsif user_input == 'n'
-        return false
-      else
-        puts 'That is not a valid option'
-      end
-    end
-  end
-
   def verify_input(input)
     valid_letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
     return input if valid_letters.include?(input[0].downcase) && input[1].to_i.between?(0, 7)
