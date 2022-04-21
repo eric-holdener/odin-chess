@@ -42,6 +42,8 @@ class Game
       loop do
         puts 'Please enter a valid move from the list.'
         move = @current_player.get_move
+        puts move
+        puts valid_moves
         if valid_moves.include? move
           board = move_pieces(board, move, piece)
           if @current_player == @player_1
