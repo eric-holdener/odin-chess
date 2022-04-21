@@ -284,10 +284,20 @@ class Game
 
   def check_for_check
     location = @current_player.pieces['king'].location
-    if check_diagonals(location) || check_horizontal_vertical(location) || check_pawn(location) || check_knight(location)
-      true
+    diag = check_diagonals(location)
+    hor_ver = check_horizontal_vertical(location)
+    pawn = check_pawn(location)
+    knight = check_knight(location)
+    if diag['tf']
+      return {'tf' => true, 'direction' => diag['direction']}
+    elsif hor_ver['tf']
+      return {'tf' => true, 'direction' => hor_ver['direction']}
+    elsif pawn['tf']
+      return {'tf' => true, 'direction' => pawn['direction']}
+    elsif knight['tf']
+      return {'tf' => true, 'direction' => knight['direction']}
     else
-      false
+      return {'tf' => false, 'direction' => nil}
     end
   end
 
@@ -438,7 +448,7 @@ class Game
             break
           elsif board[direction[i][0]][direction[i][1]].parent != player.player_color
             if board[direction[i][0]][direction[i][1]].is_a?(Queen) || board[direction[i][0]][direction[i][1]].is_a?(Bishop)
-              return true
+              return {'tf' => true, 'direction' => direction}
             else
               break
             end
@@ -447,7 +457,7 @@ class Game
           end
         end
       end
-      return false
+      return {'tf' => false, 'direction' => nil}
     when 2
       checks.each do |direction|
         i = 0
@@ -458,7 +468,7 @@ class Game
             break
           elsif board[direction[i][0]][direction[i][1]].parent != player.player_color
             if board[direction[i][0]][direction[i][1]].is_a?(Queen) || board[direction[i][0]][direction[i][1]].is_a?(Rook)
-              return true
+              return {'tf' => true, 'direction' => direction}
             else
               break
             end
@@ -467,7 +477,7 @@ class Game
           end
         end
       end
-      return false
+      return {'tf' => false, 'direction' => nil}
     when 3
       checks.each do |direction|
         i = 0
@@ -476,7 +486,7 @@ class Game
             i += 1
           elsif board[direction[i][0]][direction[i][1]].parent != player.player_color
             if board[direction[i][0]][direction[i][1]].is_a?(Pawn)
-              return true
+              return {'tf' => true, 'direction' => direction}
             else
               i += 1
             end
@@ -485,7 +495,7 @@ class Game
           end
         end
       end
-      return false
+      return {'tf' => false, 'direction' => nil}
     when 4
       checks.each do |direction|
         i = 0
@@ -494,7 +504,7 @@ class Game
             i += 1
           elsif board[direction[i][0]][direction[i][1]].parent != player.player_color
             if board[direction[i][0]][direction[i][1]].is_a?(Knight)
-              return true
+              return {'tf' => true, 'direction' => direction}
             else
               i += 1
             end
@@ -503,7 +513,7 @@ class Game
           end
         end
       end
-      return false
+      return {'tf' => false, 'direction' => nil}
     end
   end
 end

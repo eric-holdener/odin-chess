@@ -214,7 +214,7 @@ describe Game do
         game.current_player = game.player_1
         game.player_1.pieces['king'].location = [4, 4]
         game.game_board = board
-        expect(game.check_for_check).to be true
+        expect(game.check_for_check['tf']).to be true
       end
 
       it 'returns true when up/down/left/right is in check' do
@@ -226,7 +226,7 @@ describe Game do
         game.current_player = game.player_1
         game.player_1.pieces['king'].location = [4, 4]
         game.game_board = board
-        expect(game.check_for_check).to be true
+        expect(game.check_for_check['tf']).to be true
       end
 
       it 'returns true when pawn is checking king' do
@@ -238,7 +238,7 @@ describe Game do
         game.current_player = game.player_1
         game.player_1.pieces['king'].location = [4, 4]
         game.game_board = board
-        expect(game.check_for_check).to be true
+        expect(game.check_for_check['tf']).to be true
       end
 
       it 'returns true when knight is checking king' do
@@ -250,7 +250,7 @@ describe Game do
         game.current_player = game.player_1
         game.player_1.pieces['king'].location = [4, 4]
         game.game_board = board
-        expect(game.check_for_check).to be true
+        expect(game.check_for_check['tf']).to be true
       end
 
       it 'returns false when there is a piece blocking a diagonal checker' do
@@ -264,7 +264,7 @@ describe Game do
         game.current_player = game.player_1
         game.player_1.pieces['king'].location = [4, 4]
         game.game_board = board
-        expect(game.check_for_check).to be false
+        expect(game.check_for_check['tf']).to be false
       end
 
       it 'returns false when there is a piece blocking a hor_ver checker' do
@@ -278,7 +278,7 @@ describe Game do
         game.current_player = game.player_1
         game.player_1.pieces['king'].location = [4, 4]
         game.game_board = board
-        expect(game.check_for_check).to be false
+        expect(game.check_for_check['tf']).to be false
       end
 
       it 'returns false when king is not in check' do
@@ -294,7 +294,7 @@ describe Game do
         game.current_player = game.player_1
         game.player_1.pieces['king'].location = [4, 4]
         game.game_board = board
-        expect(game.check_for_check).to be false
+        expect(game.check_for_check['tf']).to be false
       end
     end
   end
