@@ -30,7 +30,7 @@ class Player
     user_input = gets.chomp
     verified_input = verify_input(user_input.split('')) if user_input.match?(/^\w\d+$/)
     converted_input = convert_input(verified_input) if verified_input
-    converted_input
+    return converted_input
   end
 
   def verify_input(input)

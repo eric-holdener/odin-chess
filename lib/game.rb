@@ -11,7 +11,7 @@ class Game
   end
 
   def play_game
-    check_y_n = check_for_check
+    check_y_n = check_for_check(@game_board)
     if @player_1.pieces['king'].alive == false || @player_2.pieces['king'].alive == false
       game_over
     elsif check_y_n['tf']
@@ -37,22 +37,29 @@ class Game
       puts "It is Player #{@current_player.player_color}'s turn"
       board = @game_board
       print_board(board)
-      valid_moves = move_functionality
+      move_function = move_functionality
+      valid_moves = move_function['valid']
+      piece = move_function['piece']
       print_moves(valid_moves)
       loop do
         puts 'Please enter a valid move from the list.'
         move = @current_player.get_move
-        puts move
-        puts valid_moves
-        if valid_moves.include? move
-          board = move_pieces(board, move, piece)
-          if @current_player == @player_1
-            @current_player = @player_2
-          else
-            @current_player = @player_1
+        valid_moves.each do |direction|
+          if direction.include? move
+            temp_board = move_pieces(board, move, piece)
+            if check_for_check(temp_board)['tf'] == false
+              board = move_pieces(board, move, piece)
+              if @current_player == @player_1
+                @current_player = @player_2
+              else
+                @current_player = @player_1
+              end
+              @game_board = board
+              return play_game
+            else
+              puts 'You cannot move yourself into check.'
+            end
           end
-          @game_board = board
-          return
         end
       end
     end
@@ -154,7 +161,7 @@ class Game
       values = []
       board[index].each_with_index do |column, idx2|
         if board[index][idx2].nil?
-          values.push(nil)
+          values.push('  ')
         else
           values.push(column.parent + column.symbol)
         end
@@ -248,10 +255,8 @@ class Game
       else
         i = 0
         while i < direction.length
-          if board[direction[i][0]][direction[i][1]] != nil && 
-          board[direction[i][0]][direction[i][1]].parent != player.player_color
+          if board[direction[i][0]][direction[i][1]] != nil && board[direction[i][0]][direction[i][1]].parent != player.player_color
             i += 1
-            next
           else
             direction.delete_at(i)
           end
@@ -289,12 +294,12 @@ class Game
     piece.alive = false
   end
 
-  def check_for_check
+  def check_for_check(board)
     location = @current_player.pieces['king'].location
-    diag = check_diagonals(location)
-    hor_ver = check_horizontal_vertical(location)
-    pawn = check_pawn(location)
-    knight = check_knight(location)
+    diag = check_diagonals(location, board)
+    hor_ver = check_horizontal_vertical(location, board)
+    pawn = check_pawn(location, board)
+    knight = check_knight(location, board)
     if diag['tf']
       return {'tf' => true, 'direction' => diag['direction']}
     elsif hor_ver['tf']
@@ -308,7 +313,7 @@ class Game
     end
   end
 
-  def check_diagonals(node)
+  def check_diagonals(node, board)
     checks = []
     up_right = []
     up_left = []
@@ -329,12 +334,12 @@ class Game
 
     checks = clean_checks(checks, node)
 
-    tf = contains_piece(checks, 1)
+    tf = contains_piece(checks, 1, board)
 
     return tf
   end
 
-  def check_horizontal_vertical(node)
+  def check_horizontal_vertical(node, board)
     checks = []
     up = []
     right = []
@@ -356,12 +361,12 @@ class Game
 
     checks = clean_checks(checks, node)
 
-    tf = contains_piece(checks, 2)
+    tf = contains_piece(checks, 2, board)
 
     return tf
   end
 
-  def check_pawn(node)
+  def check_pawn(node, board)
     checks = []
     check_subarray = []
     if @current_player.player_color == 'W'
@@ -376,12 +381,12 @@ class Game
 
     checks = clean_checks(checks, node)
 
-    tf = contains_piece(checks, 3)
+    tf = contains_piece(checks, 3, board)
 
     return tf
   end
 
-  def check_knight(node)
+  def check_knight(node, board)
     checks = []
     up_left = []
     up_right = []
@@ -412,7 +417,7 @@ class Game
 
     checks = clean_checks(checks, node)
 
-    tf = contains_piece(checks, 4)
+    tf = contains_piece(checks, 4, board)
 
     return tf
   end
@@ -441,9 +446,8 @@ class Game
     children
   end
 
-  def contains_piece(checks, type)
+  def contains_piece(checks, type, board)
     player = @current_player
-    board = @game_board
     case type
     when 1
       checks.each do |direction|
@@ -542,12 +546,13 @@ class Game
       piece = @current_player.select_piece(@game_board)
       selected_piece = board[piece[0]][piece[1]]
       all_possible_moves = selected_piece.get_valid_moves(piece)
-      if piece.class == Pawn
+      if selected_piece.is_a? Pawn
         valid_moves = parse_valid_moves_pawn(all_possible_moves, board, @current_player)
       else
         valid_moves = parse_valid_moves_again(all_possible_moves, board, @current_player)
       end
-      return valid_moves if valid_moves.empty? == false
+      valid = {'valid' => valid_moves, 'piece' => selected_piece}
+      return valid if valid_moves.empty? == false
 
       puts 'That piece cannot move. Please choose another piece'
     end

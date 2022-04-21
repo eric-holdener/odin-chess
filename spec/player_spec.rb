@@ -76,35 +76,6 @@ describe Player do
     end
   end
 
-  describe '#get_move' do
-    context 'gets where player wants to move piece' do
-      it 'moves piece to selected location' do
-      end
-
-      it 'returns an error if location already has a non capturable unit on it' do
-      end
-
-      it 'reutrns an error if input is outside scope of moves piece can make' do
-      end
-
-      it 'only allows for legal moves - cannot move THROUGH pieces' do
-      end
-    end
-  end
-
-  describe '#unselect_piece' do
-    context 'allows player to unselect a piece' do
-      it 'unselects piece given proper input' do
-      end
-
-      it 'locks in selection given proper input' do
-      end
-
-      it 'reprompts user to give proper input if improper input is given' do
-      end
-    end
-  end
-
   describe '#check_for_valid_piece' do
     context 'checks to make sure the board location selected' do
       it 'is the same color as player' do

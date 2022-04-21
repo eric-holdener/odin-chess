@@ -122,7 +122,7 @@ class Knight < Pieces
   attr_accessor :symbol
   def initialize(parent)
     super(parent)
-    @symbol = 'H'
+    @symbol = 'N'
   end
 
   def get_valid_moves(node)
